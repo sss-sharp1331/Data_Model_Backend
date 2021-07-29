@@ -60,7 +60,8 @@ def predict_api():
         respD="INVALID SSN NUMBER"
         resp_data={
         "CRED_SCORE":res,
-        "RES":respD
+        "CRED_APPROVAL_STATUS":respD,
+        "resOrig":0
         }
         
         return jsonify(resp_data)
