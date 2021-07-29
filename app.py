@@ -4,12 +4,12 @@ from flask import Flask,request,jsonify,render_template
 import pickle
 
 app = Flask(__name__)
-model=pickle.load(open('storage.pkl','rb'))
+model=pickle.load(open('save.p','rb'))
 
 
 @app.route("/")
 def hello_world():
-    return "<p>BRUHHHHHHHHHH</p>"
+    return "<h1>PREDICTION</h1>"
 
 @app.route("/predict",methods=['POST'])
 def predict_api():
@@ -30,18 +30,19 @@ def predict_api():
     debt2income = request_data['debt2income']
     age_on_file = request_data['age_on_file']
     array=np.array([loan_amnt,emp_length,annual_inc,delinq_2yrs,inq_last_6mths,mths_since_last_delinq,mths_since_last_record,open_acc,
-                    pub_rec,revol_bal,revol_util,total_acc,purpose,debt2income,age_on_file])
-    df = pd.DataFrame([array], 
-             columns=['loan_amnt','emp_length','annual_inc','delinq_2yrs','inq_last_6mths','mths_since_last_delinq','mths_since_last_record','open_acc',
-                    'pub_rec','revol_bal','revol_util','total_acc','purpose','debt2income','age_on_file'])
-    y_pred=model.predict(df)
-    if(y_pred==[1]):
-        print(y_pred)
-        return "Success !"
-        
+                    pub_rec,revol_bal,revol_util,total_acc,purpose,debt2income,age_on_file])   
+    y_pred=model.decision_function([array])
+    res=str(y_pred[0])
+    respD=""
+    if(y_pred[0]>=2):
+        respD="STATUS_ACCEPT"
     else:
-        print(y_pred)
-        return "Failed !"
+        respD="STATUS_REJECT"
+    resp_data={
+        "SCR":res,
+        "RES":respD
+    }
+    return jsonify(resp_data)
         
     
     
