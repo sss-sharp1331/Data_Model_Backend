@@ -43,11 +43,11 @@ def hello_world():
 def predict_api():
     BData=pd.read_csv("BureauData.csv")
     request_data = request.get_json()
-    SSN=request_data['SSN']
+    SSN=request_data['ssn']
     SSN_IN=int(SSN)
-    loan_amnt = request_data['loan_amnt']
-    emp_length = request_data['emp_length']
-    annual_inc = request_data['annual_inc']
+    loan_amnt = float(request_data['amount'])
+    emp_length = float(request_data['workExp'])
+    annual_inc = float(request_data['annualSalary'])
     purpose=0
     res=0
     respD=""
