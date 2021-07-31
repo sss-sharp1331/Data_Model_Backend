@@ -56,6 +56,26 @@ def predict_api():
     
     RowData=BData.loc[BData['id']==SSN_IN]
     
+    if(loan_amnt==0 or loan_amnt<0):
+        respD="INVALID LOAN AMOUNT"
+        resp_data={
+        "CRED_SCORE":res,
+        "CRED_APPROVAL_STATUS":respD,
+        "resOrig":0
+        }
+        
+        return jsonify(resp_data)
+    
+    if(annual_inc==0 or annual_inc<0):
+        respD="INVALID ANNUAL INCOME"
+        resp_data={
+        "CRED_SCORE":res,
+        "CRED_APPROVAL_STATUS":respD,
+        "resOrig":0
+        }
+        
+        return jsonify(resp_data)
+    
     if(RowData.size==0):
         respD="INVALID SSN NUMBER"
         resp_data={
