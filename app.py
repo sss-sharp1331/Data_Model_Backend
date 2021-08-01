@@ -57,51 +57,41 @@ def predict_api():
     RowData=BData.loc[BData['id']==SSN_IN]
     
     if(loan_amnt==0 or loan_amnt<0):
-        respD="STATUS_REJECTED"
+        respD="REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":"INVALID LOAN AMOUNT"
+        "resOrig":"Invalid Loan Amount"
         }
         
         return jsonify(resp_data)
     
     if(annual_inc==0 or annual_inc<0):
-        respD="STATUS_REJECTED"
+        respD="REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":"INVALID ANNUAL INCOME"
+        "resOrig":"Invalid Annual Income"
         }
         
         return jsonify(resp_data)
     
     if(RowData.size==0):
-        respD="STATUS_REJECTED"
+        respD="REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":"INVALID SSN NUMBER"
+        "resOrig":"Invalid SSN Number"
         }
         
         return jsonify(resp_data)
     
     if(loan_amnt<10000):
-        respD="STATUS_REJECTED"
+        respD="REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":"LOAN AMOUNT LESS THAN 10000"
-        }
-        
-        return jsonify(resp_data)
-    
-    if(emp_length<6):
-        respD="STATUS_REJECTED"
-        resp_data={
-        "CRED_SCORE":res,
-        "CRED_APPROVAL_STATUS":respD,
-        "resOrig":"WORK EXPERIENCE LESS THAN 6"
+        "resOrig":"Loan Amount less than 10000"
         }
         
         return jsonify(resp_data)
@@ -141,12 +131,12 @@ def predict_api():
     res=float(y_pred[0])
     resOrig=""
     if(y_pred[0]>=1.2):
-        respD="STATUS_ACCEPT"
-        resOrig="LOAN APPROVED"
+        respD="Approved"
+        resOrig="Approved"
         
     else:
-        respD="STATUS_REJECT"
-        resOrig="LOW CREDIT SCORE"
+        respD="REJECT"
+        resOrig="Low Credit Score"
     y_max=12.58
     y_min=-1.21
     
