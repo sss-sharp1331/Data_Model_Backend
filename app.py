@@ -57,31 +57,51 @@ def predict_api():
     RowData=BData.loc[BData['id']==SSN_IN]
     
     if(loan_amnt==0 or loan_amnt<0):
-        respD="INVALID LOAN AMOUNT"
+        respD="STATUS_REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":0
+        "reason":"INVALID LOAN AMOUNT"
         }
         
         return jsonify(resp_data)
     
     if(annual_inc==0 or annual_inc<0):
-        respD="INVALID ANNUAL INCOME"
+        respD="STATUS_REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":0
+        "reason":"INVALID ANNUAL INCOME"
         }
         
         return jsonify(resp_data)
     
     if(RowData.size==0):
-        respD="INVALID SSN NUMBER"
+        respD="STATUS_REJECTED"
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":0
+        "reason":"INVALID SSN NUMBER"
+        }
+        
+        return jsonify(resp_data)
+    
+    if(loan_amnt<10000):
+        respD="STATUS_REJECTED"
+        resp_data={
+        "CRED_SCORE":res,
+        "CRED_APPROVAL_STATUS":respD,
+        "reason":"LOAN AMOUNT LESS THAN 10000"
+        }
+        
+        return jsonify(resp_data)
+    
+    if(emp_length<6):
+        respD="STATUS_REJECTED"
+        resp_data={
+        "CRED_SCORE":res,
+        "CRED_APPROVAL_STATUS":respD,
+        "reason":"WORK EXPERIENCE LESS THAN 6"
         }
         
         return jsonify(resp_data)
@@ -119,19 +139,23 @@ def predict_api():
     print(array)
     y_pred=model.decision_function([array])
     res=float(y_pred[0])
+    reason=""
     if(y_pred[0]>=1.2):
         respD="STATUS_ACCEPT"
+        reason="LOAN APPROVED"
+        
     else:
         respD="STATUS_REJECT"
+        reason="LOW CREDIT SCORE"
     y_max=12.58
     y_min=-1.21
-    resOrig=res
+    
     res=((y_max-res)*350+(res-y_min)*850)/(y_max-y_min)
     res=str(int(res))
     resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "resOrig":str(resOrig)
+        "reason":reason
     }
     return jsonify(resp_data)
         
