@@ -61,7 +61,7 @@ def predict_api():
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "reason":"INVALID LOAN AMOUNT"
+        "resOrig":"INVALID LOAN AMOUNT"
         }
         
         return jsonify(resp_data)
@@ -71,7 +71,7 @@ def predict_api():
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "reason":"INVALID ANNUAL INCOME"
+        "resOrig":"INVALID ANNUAL INCOME"
         }
         
         return jsonify(resp_data)
@@ -81,7 +81,7 @@ def predict_api():
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "reason":"INVALID SSN NUMBER"
+        "resOrig":"INVALID SSN NUMBER"
         }
         
         return jsonify(resp_data)
@@ -91,7 +91,7 @@ def predict_api():
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "reason":"LOAN AMOUNT LESS THAN 10000"
+        "resOrig":"LOAN AMOUNT LESS THAN 10000"
         }
         
         return jsonify(resp_data)
@@ -101,7 +101,7 @@ def predict_api():
         resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "reason":"WORK EXPERIENCE LESS THAN 6"
+        "resOrig":"WORK EXPERIENCE LESS THAN 6"
         }
         
         return jsonify(resp_data)
@@ -139,14 +139,14 @@ def predict_api():
     print(array)
     y_pred=model.decision_function([array])
     res=float(y_pred[0])
-    reason=""
+    resOrig=""
     if(y_pred[0]>=1.2):
         respD="STATUS_ACCEPT"
-        reason="LOAN APPROVED"
+        resOrig="LOAN APPROVED"
         
     else:
         respD="STATUS_REJECT"
-        reason="LOW CREDIT SCORE"
+        resOrig="LOW CREDIT SCORE"
     y_max=12.58
     y_min=-1.21
     
@@ -155,7 +155,7 @@ def predict_api():
     resp_data={
         "CRED_SCORE":res,
         "CRED_APPROVAL_STATUS":respD,
-        "reason":reason
+        "resOrig":resOrig
     }
     return jsonify(resp_data)
         
